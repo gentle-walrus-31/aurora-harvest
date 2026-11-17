@@ -16,6 +16,7 @@ const port = Number.isInteger(requested) && requested > 0 && requested < 65536 ?
 const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
+  '.webmanifest': 'application/manifest+json',
   '.mjs': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8',

@@ -72,6 +72,10 @@ export function createInput(canvas) {
     mouseY = point.y;
     actions |= ACTION_CONFIRM;
   });
+  // Touch drags steer the lantern through the same pointer events above:
+  // pointermove fires while a finger is down, pointerdown sets the target.
+  // A long press must not open a context menu over the game.
+  canvas.addEventListener('contextmenu', (event) => event.preventDefault());
 
   function has(codeSet) {
     for (const code of codeSet) if (held.has(code)) return true;
@@ -99,6 +103,10 @@ export function createInput(canvas) {
       const taken = actions;
       actions = 0;
       return taken;
+    },
+    /** Queue a one-shot action (used by the on-screen touch buttons). */
+    queue(action) {
+      actions |= action;
     },
   };
 }

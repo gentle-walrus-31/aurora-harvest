@@ -61,6 +61,21 @@ function runGame() {
   let best = readBest();
   let accumulator = 0;
   let last = performance.now();
+  // On-screen touch controls and the portrait hint: updated only on change.
+  const pauseBtn = document.getElementById('btn-pause');
+  const muteBtn = document.getElementById('btn-mute');
+  let lastScreen = '';
+  let lastPortrait = false;
+  let lastMuted = false;
+  let lastPaused = false;
+  pauseBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    input.queue(ACTION_PAUSE);
+  });
+  muteBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    input.queue(ACTION_MUTE);
+  });
 
   // Screen readers hear the screen changes and each hit.
   function announce(message) {
@@ -154,6 +169,30 @@ function runGame() {
       accumulator = 0;
     }
     renderer.draw(world.state, screen, best, audio.isMuted());
+    // Touch UI: the pause button only while playing or paused; the mute
+    // button always. The body classes drive the portrait rotate hint.
+    if (screen !== lastScreen) {
+      document.body.dataset.screen = screen;
+      lastScreen = screen;
+    }
+    const portrait = window.innerHeight > window.innerWidth;
+    if (portrait !== lastPortrait) {
+      document.body.classList.toggle('portrait', portrait);
+      lastPortrait = portrait;
+    }
+    const paused = screen === SCREEN_PAUSED;
+    if (paused !== lastPaused) {
+      pauseBtn.textContent = paused ? '▶' : '⏸';
+      pauseBtn.setAttribute('aria-label', paused ? 'Lanjut' : 'Jeda');
+      lastPaused = paused;
+    }
+    pauseBtn.style.display = (screen === SCREEN_PLAY || paused) ? 'flex' : 'none';
+    const mutedNow = audio.isMuted();
+    if (mutedNow !== lastMuted) {
+      muteBtn.textContent = mutedNow ? '🔇' : '🔊';
+      muteBtn.setAttribute('aria-label', mutedNow ? 'Nyalakan suara' : 'Matikan suara');
+      lastMuted = mutedNow;
+    }
   }
 
   // Leaving the tab pauses a running game rather than letting storms fall unseen.

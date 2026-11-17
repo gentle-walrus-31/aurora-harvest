@@ -313,7 +313,7 @@ export function createRenderer(canvas) {
   const TITLE_LINES = [
     'Kumpulkan Orb Cahaya, hindari Awan Badai.',
     'Capai skor 500 untuk menang. 3 nyawa.',
-    'Gerak: WASD / panah, atau ikuti mouse.',
+    'Gerak: WASD / panah, mouse, atau seret jari.',
     'Komet Emas +50 dan +1 nyawa. Perisai kebal 5 detik.',
     'P = jeda,  M = suara,  Spasi = mulai',
     '',
@@ -339,19 +339,19 @@ export function createRenderer(canvas) {
     drawLantern(state);
     if (screen === SCREEN_TITLE) {
       TITLE_LINES[5] = bestLabel(best);
-      drawPanel('Aurora Harvest', TITLE_LINES, 'Tekan Spasi atau klik untuk mulai');
+      drawPanel('Aurora Harvest', TITLE_LINES, 'Tekan Spasi, klik, atau ketuk untuk mulai');
       return;
     }
     drawHud(state, best, muted);
-    if (screen === SCREEN_PAUSED) drawPanel('Jeda', PAUSED_LINES, 'Tekan P untuk lanjut');
+    if (screen === SCREEN_PAUSED) drawPanel('Jeda', PAUSED_LINES, 'Tekan P atau ketuk untuk lanjut');
     else if (screen === SCREEN_OVER) {
       OVER_LINES[0] = finalLabel(state.score);
       OVER_LINES[1] = bestLabel(best);
-      drawPanel('Game Over', OVER_LINES, 'Tekan R atau klik untuk main lagi');
+      drawPanel('Game Over', OVER_LINES, 'Tekan R, klik, atau ketuk untuk main lagi');
     } else if (screen === SCREEN_WIN) {
       WIN_LINES[0] = finalLabel(state.score);
       WIN_LINES[1] = bestLabel(best);
-      drawPanel('Menang! Aurora Panen!', WIN_LINES, 'Tekan R atau klik untuk main lagi');
+      drawPanel('Menang! Aurora Panen!', WIN_LINES, 'Tekan R, klik, atau ketuk untuk main lagi');
     }
   }
 
